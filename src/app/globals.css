@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+@theme {
+  --color-blood: #8b0000;
+  --color-deep: #5c0000;
+  --color-accent: #c1121f;
+  --color-ink: #050505;
+  --color-surface: #0d0d0d;
+  --color-surface-2: #141414;
+  --color-line: #232323;
+  --color-light: #f5f5f5;
+  --color-muted: #a8a8a8;
+  --font-display: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
+}
+body {
+  background: var(--color-ink);
+  color: var(--color-light);
+  font-family: var(--font-display);
+  overflow-x: hidden;
+}
+
+::selection {
+  background: #8b0000;
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid #c1121f;
+  outline-offset: 2px;
+}
+
+/* Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #3a0a0a transparent;
+}
+
+/* ---------- Hero animation ---------- */
+@keyframes cg-pulse {
+  0%, 100% { text-shadow: 0 0 18px rgba(193, 18, 31, 0.35), 0 0 60px rgba(139, 0, 0, 0.25); color: #f5f5f5; }
+  50% { text-shadow: 0 0 28px rgba(193, 18, 31, 0.75), 0 0 90px rgba(139, 0, 0, 0.55); color: #fff; }
+}
+@keyframes cg-accent {
+  0%, 100% { color: #8b0000; filter: brightness(1); }
+  45% { color: #c1121f; filter: brightness(1.25); }
+  50% { color: #e0303d; filter: brightness(1.45); }
+  55% { color: #c1121f; filter: brightness(1.25); }
+}
+@keyframes cg-drift {
+  0% { transform: scale(1.12) translate3d(0, 0, 0); }
+  100% { transform: scale(1.18) translate3d(-1.5%, -1%, 0); }
+}
+@keyframes cg-fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes cg-blink {
+  0%, 80%, 100% { opacity: 0.25; transform: translateY(0); }
+  40% { opacity: 1; transform: translateY(-3px); }
+}
+@keyframes cg-scan {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
+}
+
+.cg-hero-title { animation: cg-pulse 4s ease-in-out infinite; }
+.cg-hero-accent { animation: cg-accent 4s ease-in-out infinite; }
+.cg-hero-bg { animation: cg-drift 30s ease-in-out infinite alternate; will-change: transform; }
+.cg-fade-up { animation: cg-fade-up 0.45s ease-out both; }
+.cg-dot { animation: cg-blink 1.2s infinite ease-in-out; }
+.cg-scanline::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(193, 18, 31, 0.18), transparent);
+  animation: cg-scan 2.5s linear infinite;
+}
+
+.cg-grid-bg {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.cg-card {
+  background: linear-gradient(180deg, #111 0%, #0b0b0b 100%);
+  border: 1px solid #222;
+  border-radius: 10px;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.cg-card-hover:hover {
+  border-color: rgba(193, 18, 31, 0.55);
+  box-shadow: 0 8px 30px -12px rgba(193, 18, 31, 0.45);
+  transform: translateY(-2px);
+}
+
+.cg-input {
+  width: 100%;
+  background: #0a0a0a;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+  color: #f5f5f5;
+  font-size: 0.925rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.cg-input::placeholder { color: #6b6b6b; }
+.cg-input:focus { outline: none; border-color: #c1121f; box-shadow: 0 0 0 3px rgba(193, 18, 31, 0.2); }
+select.cg-input option { background: #0d0d0d; }
+
+/* Markdown content from Jarvis */
+.cg-prose p { margin: 0.4rem 0; line-height: 1.65; }
+.cg-prose ul { list-style: disc; padding-left: 1.25rem; margin: 0.4rem 0; }
+.cg-prose ol { list-style: decimal; padding-left: 1.25rem; margin: 0.4rem 0; }
+.cg-prose li { margin: 0.2rem 0; }
+.cg-prose h3 { font-weight: 700; margin-top: 0.8rem; font-size: 1.02rem; }
+.cg-prose code { background: #1c1c1c; padding: 0.1rem 0.35rem; border-radius: 4px; font-size: 0.85em; color: #ff8a8a; }
+.cg-prose pre { background: #080808; border: 1px solid #242424; padding: 0.8rem; border-radius: 8px; overflow-x: auto; margin: 0.6rem 0; }
+.cg-prose pre code { background: none; color: #e5e5e5; padding: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .cg-hero-bg { transform: scale(1.1); }
+}
+
+/* ---------- Printing (resume / cover letter PDF export) ---------- */
+@media print {
+  @page { margin: 12mm; }
+  body { background: #fff !important; color: #000 !important; }
+  body * { visibility: hidden; }
+  .cg-print, .cg-print * { visibility: visible; }
+  .cg-print { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none !important; border: none !important; }
+}
